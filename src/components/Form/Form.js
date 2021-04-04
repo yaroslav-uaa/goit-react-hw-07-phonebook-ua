@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addContact } from '../../redux/contacts/contacts-actions';
+import { addContact } from '../../redux/contacts/contacts-operations';
 import f from './Form.module.css';
 import PropTypes from 'prop-types';
 

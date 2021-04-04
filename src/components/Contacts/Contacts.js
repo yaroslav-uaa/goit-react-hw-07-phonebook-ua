@@ -1,24 +1,68 @@
 import PropTypes from 'prop-types';
+import { Component } from 'react';
 import { connect } from 'react-redux';
-import { deleteContact } from '../../redux/contacts/contacts-actions';
+import {
+  deleteContact,
+  fetchContacts,
+  editContact,
+} from '../../redux/contacts/contacts-operations';
 import c from './Contacts.module.css';
 
-const Contacts = ({ contacts, deleteContact }) => (
-  <ul>
-    {contacts.map(({ id, name, number }) => (
-      <li key={id} className={c.links}>
-        <p>{name}</p>
-        <p>{number}</p>
-        <button type="button" onClick={() => {}}>
-          Edit
-        </button>
-        <button type="button" onClick={() => deleteContact(id)}>
-          Delete
-        </button>
-      </li>
-    ))}
-  </ul>
-);
+class Contacts extends Component {
+  state = {
+    name: '',
+    number: '',
+  };
+
+  componentDidMount() {
+    this.props.fetchContacts();
+  }
+
+  handleNameChange = ({ target: { name, value } }) => {
+    this.setState({ [name]: value });
+  };
+
+  render() {
+    const { contacts, deleteContact } = this.props;
+    return (
+      <ul>
+        {this.props.isLoading && <h1>Загрузка</h1>}
+        {contacts.map(({ id, name, number }) => (
+          <li key={id} className={c.links}>
+            <input
+              type="text"
+              name="name"
+              value={name}
+              placeholder="Enter your name"
+              onChange={this.handleNameChange}
+              pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+              title="Ім'я може містити тільки букви, апострофи, тире і пробіли. Наприклад Буся, Буся Красотуся, Буся ля Красотуся і т.д."
+              required
+            />
+
+            <input
+              type="tel"
+              name="number"
+              value={number}
+              placeholder="Enter your number"
+              onChange={this.handleNameChange}
+              pattern="(\+?( |-|\.)?\d{1,2}( |-|\.)?)?(\(?\d{3}\)?|\d{3})( |-|\.)?(\d{3}( |-|\.)?\d{4})"
+              title="Номер телефона повинен складатися з 11-12 цифр і може містити цифри, пробіли, тире, пузаті скобки і може починатися з +"
+              required
+            />
+
+            <button type="button" onClick={() => editContact(id)}>
+              Edit
+            </button>
+            <button type="button" onClick={() => deleteContact(id)}>
+              Delete
+            </button>
+          </li>
+        ))}
+      </ul>
+    );
+  }
+}
 
 Contacts.propTypes = {
   contacts: PropTypes.arrayOf(PropTypes.object),
@@ -38,13 +82,15 @@ const getFilteredContact = (allContacts, filter) => {
     : allContacts;
 };
 
-const mapStateToProps = ({ contacts: { items, filter } }) => ({
+const mapStateToProps = ({ contacts: { items, filter, loading } }) => ({
   contacts: getFilteredContact(items, filter),
+  isLoading: loading,
 });
 
 const mapDispatchToProps = dispatch => ({
   deleteContact: id => dispatch(deleteContact(id)),
-  // editContact: id => dispatch(editContact(id)),
+  fetchContacts: () => dispatch(fetchContacts()),
+  editContacts: id => dispatch(editContact(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Contacts);

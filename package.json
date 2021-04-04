@@ -1,13 +1,14 @@
 {
-  "name": "goit-react-hw-06-phonebook",
+  "name": "goit-react-hw-07-phonebook",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://goit-react-hw-06-phonebook.netlify.app",
+  "homepage": "https://goit-react-hw-07-phonebook-ua.netlify.app",
   "dependencies": {
     "@reduxjs/toolkit": "^1.5.1",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.8.0",
+    "axios": "^0.21.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-redux": "^7.2.3",
@@ -23,7 +24,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "netlify deploy -p"
+    "deploy": "netlify deploy -p",
+    "sjson": "json-server --watch db.json"
   },
   "eslintConfig": {
     "extends": [

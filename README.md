@@ -1,1 +1,1 @@
-First commit - init redux Second commit - redux toolkit
+My app first commit without selectors
