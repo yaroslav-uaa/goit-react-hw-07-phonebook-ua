@@ -37,14 +37,13 @@ const Contacts = ({
     setUnitNumber(currentUnitNumber);
   };
 
-  const updateData = ({ id, newUnitNumber, newUnitName }) => {
-    updateContacts({ id, newUnitNumber, newUnitName });
+  const updateData = ({ name, number, id }) => {
+    updateContacts({ name, number, id });
   };
 
-  const onSave = ({ id, newUnitNumber, newUnitName }) => {
-    updateData({ id, newUnitNumber, newUnitName });
+  const onSave = ({ name, number, id }) => {
+    updateData({ name, number, id });
     onCancel();
-    fetchContacts();
   };
 
   const onCancel = () => {
@@ -57,103 +56,95 @@ const Contacts = ({
   };
 
   return (
-    <div className="container">
+    <ul className="container">
       {isLoading && <h1>Загрузка</h1>}
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Number</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {contacts.map(({ id, name, number }) => (
-            <tr key={id}>
-              <td>
-                {inEditMode.status && inEditMode.rowKey === id ? (
-                  <input
-                    value={unitName}
-                    onChange={event => setUnitName(event.target.value)}
-                    type="text"
-                    name="name"
-                    placeholder="Enter your name"
-                    title="Ім'я може містити тільки букви, апострофи, тире і пробіли. Наприклад Буся, Буся Красотуся, Буся ля Красотуся і т.д."
-                    required
-                    pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-                  />
-                ) : (
-                  name
-                )}
-              </td>
-              <td>
-                {inEditMode.status && inEditMode.rowKey === id ? (
-                  <input
-                    type="tel"
-                    value={unitNumber}
-                    name="number"
-                    onChange={event => setUnitNumber(event.target.value)}
-                    placeholder="Enter your number"
-                    title="Номер телефона повинен складатися з 11-12 цифр і може містити цифри, пробіли, тире, пузаті скобки і може починатися з +"
-                    required
-                    pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                  />
-                ) : (
-                  number
-                )}
-              </td>
-              <td>
-                {inEditMode.status && inEditMode.rowKey === id ? (
-                  <React.Fragment>
-                    <button
-                      className={'btn-success'}
-                      onClick={() =>
-                        onSave({
-                          id: id,
-                          newUnitName: unitName,
-                          newUnitNumber: unitNumber,
-                        })
-                      }
-                    >
-                      Save
-                    </button>
+      {contacts.map(({ name, number, id }) => (
+        <li key={id} className={c.link}>
+          <p>
+            {inEditMode.status && inEditMode.rowKey === id ? (
+              <input
+                className={c.editInput}
+                value={unitName}
+                onChange={event => setUnitName(event.target.value)}
+                type="text"
+                name="name"
+                placeholder="Name"
+                title="Ім'я може містити тільки букви, апострофи, тире і пробіли. Наприклад Буся, Буся Красотуся, Буся ля Красотуся і т.д."
+                required
+                pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+              />
+            ) : (
+              name
+            )}
+          </p>
+          <p>
+            {inEditMode.status && inEditMode.rowKey === id ? (
+              <input
+                className={c.editInput}
+                type="tel"
+                value={unitNumber}
+                name="number"
+                onChange={event => setUnitNumber(event.target.value)}
+                placeholder="Number"
+                title="Номер телефона повинен складатися з 11-12 цифр і може містити цифри, пробіли, тире, пузаті скобки і може починатися з +"
+                required
+                pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+              />
+            ) : (
+              number
+            )}
+          </p>
+          <div className={c.btnContainer}>
+            {inEditMode.status && inEditMode.rowKey === id ? (
+              <React.Fragment>
+                <button
+                  className={'btn-success'}
+                  onClick={() =>
+                    onSave({
+                      id: id,
+                      name: unitName,
+                      number: unitNumber,
+                    })
+                  }
+                >
+                  Save
+                </button>
 
-                    <button
-                      className={'btn-secondary'}
-                      style={{ marginLeft: 8 }}
-                      onClick={() => onCancel()}
-                    >
-                      Cancel
-                    </button>
-                  </React.Fragment>
-                ) : (
-                  <React.Fragment>
-                    <button
-                      className={'btn-primary'}
-                      onClick={() =>
-                        onEdit({
-                          id: id,
-                          currentUnitName: name,
-                          currentUnitNumber: number,
-                        })
-                      }
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className={'btn-primary'}
-                      onClick={() => deleteContact(id)}
-                    >
-                      Delete
-                    </button>
-                  </React.Fragment>
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+                <button
+                  className={'btn-secondary'}
+                  style={{ marginLeft: 18 }}
+                  onClick={() => onCancel()}
+                >
+                  Cancel
+                </button>
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                <button
+                  className={'btn-primary'}
+                  onClick={() =>
+                    onEdit({
+                      id: id,
+                      currentUnitName: name,
+                      currentUnitNumber: number,
+                    })
+                  }
+                >
+                  Edit
+                </button>
+                <button
+                  style={{ marginLeft: 18 }}
+                  className={'btn-primary'}
+                  onClick={() => deleteContact(id)}
+                >
+                  Delete
+                </button>
+              </React.Fragment>
+            )}
+          </div>
+        </li>
+      ))}
+    </ul>
   );
 };
 
@@ -183,8 +174,8 @@ const mapStateToProps = ({ contacts: { items, filter, loading } }) => ({
 const mapDispatchToProps = dispatch => ({
   deleteContact: id => dispatch(deleteContact(id)),
   fetchContacts: () => dispatch(fetchContacts()),
-  updateContacts: ({ id, name, number }) =>
-    dispatch(updateContact({ id, name, number })),
+  updateContacts: ({ name, number, id }) =>
+    dispatch(updateContact({ name, number, id })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Contacts);

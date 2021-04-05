@@ -46,7 +46,7 @@ const addContact = ({ name, number }) => async dispatch => {
   //   .catch(error => dispatch(addContactError(error)));
 };
 
-const updateContact = ({ id, name, number }) => async dispatch => {
+const updateContact = ({ name, number, id }) => async dispatch => {
   dispatch(updateContactRequest());
   const update = { name, number };
   try {
