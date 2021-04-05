@@ -6,15 +6,15 @@ import {
   addContactRequest,
   addContactSuccess,
   addContactError,
-  editContactRequest,
-  editContactSuccess,
-  editContactError,
+  updateContactRequest,
+  updateContactSuccess,
+  updateContactError,
   deleteContactRequest,
   deleteContactSuccess,
   deleteContactError,
 } from './contacts-actions';
 
-axios.defaults.baseURL = 'http://localhost:3000';
+axios.defaults.baseURL = 'http://localhost:4040';
 
 const fetchContacts = () => async dispatch => {
   dispatch(fetchContactsRequest());
@@ -46,14 +46,15 @@ const addContact = ({ name, number }) => async dispatch => {
   //   .catch(error => dispatch(addContactError(error)));
 };
 
-const editContact = ({ id, complited }) => dispatch => {
-  dispatch(editContactRequest());
-  const update = { complited };
-
-  axios
-    .patch(`/contacts/${id}`, update)
-    .then(({ data }) => dispatch(editContactSuccess(data)))
-    .catch(error => dispatch(editContactError(error)));
+const updateContact = ({ id, name, number }) => async dispatch => {
+  dispatch(updateContactRequest());
+  const update = { name, number };
+  try {
+    const { data } = await axios.patch(`/contacts/${id}`, update);
+    dispatch(updateContactSuccess(data));
+  } catch (error) {
+    dispatch(updateContactError(error));
+  }
 };
 
 const deleteContact = id => async dispatch => {
@@ -70,4 +71,4 @@ const deleteContact = id => async dispatch => {
   //   .catch(error => dispatch(deleteContactError(error)));
 };
 
-export { addContact, deleteContact, fetchContacts, editContact };
+export { addContact, deleteContact, fetchContacts, updateContact };

@@ -8,9 +8,9 @@ const addContactRequest = createAction('contacts/addContactRequest');
 const addContactSuccess = createAction('contacts/addContactSuccess');
 const addContactError = createAction('contacts/addContactError');
 
-const editContactRequest = createAction('contacts/editContactRequest');
-const editContactSuccess = createAction('contacts/editContactSuccess');
-const editContactError = createAction('contacts/editContactError');
+const updateContactRequest = createAction('contacts/updateContactRequest');
+const updateContactSuccess = createAction('contacts/updateContactSuccess');
+const updateContactError = createAction('contacts/updateContactError');
 
 const deleteContactRequest = createAction('contacts/deleteContactRequest');
 const deleteContactSuccess = createAction('contacts/deleteContactSuccess');
@@ -25,9 +25,9 @@ export {
   addContactRequest,
   addContactSuccess,
   addContactError,
-  editContactRequest,
-  editContactSuccess,
-  editContactError,
+  updateContactRequest,
+  updateContactSuccess,
+  updateContactError,
   deleteContactRequest,
   deleteContactSuccess,
   deleteContactError,
