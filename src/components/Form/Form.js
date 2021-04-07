@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { getContacts } from '../../redux/contacts/contacts-selectors';
 import { addContact } from '../../redux/contacts/contacts-operations';
 import f from './Form.module.css';
 import PropTypes from 'prop-types';
@@ -13,10 +14,21 @@ export class Form extends Component {
   handleSubmit = e => {
     const { onSubmit, contacts } = this.props;
     e.preventDefault();
-    const originContact = contacts.find(item => item.name === this.state.name);
-    return originContact
-      ? alert(`${this.state.name} is already used`)
-      : onSubmit({ ...this.state });
+    const originName = contacts.find(
+      ({ name }) => name.toLowerCase() === this.state.name.toLowerCase(),
+    );
+    const originNumber = contacts.find(
+      ({ number }) => number === this.state.number,
+    );
+    if (originName) {
+      alert(`${this.state.name} is already used`);
+      return;
+    }
+    if (originNumber) {
+      alert(`${this.state.number} is already used`);
+      return;
+    }
+    onSubmit({ ...this.state });
   };
 
   handleNameChange = ({ target: { name, value } }) => {
@@ -66,7 +78,7 @@ Form.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  contacts: state.contacts.items,
+  contacts: getContacts(state),
 });
 
 const mapDispatchToProps = dispatch => ({
